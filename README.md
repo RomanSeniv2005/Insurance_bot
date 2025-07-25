@@ -121,18 +121,18 @@ USE_WEBHOOK=False
 ## 💬 Main Commands & Menu
 - `/start` — Start the bot and show main menu
 - **Оформити страховку** — Begin insurance process
-- **Підтримка** — Get support info
-- **FAQ** — Frequently asked questions
 - **Розпочати все знову** — Restart the process
 - **Скасувати** — Cancel current operation
-- **Мій поліс** — Get your policy again
 
 ---
 
 ## 📝 Usage
 1. Start the bot with `/start` or by messaging it in Telegram.
 2. Follow the prompts to upload your passport and car documents.
-3. Confirm the extracted data and agree to the price.
+3. If you have made a mistake, you can select “Скасувати” або "Розпочати все спочатку" in the menu.
+4. You get extracted data from mindee
+4. If the data from mindee is incorrect, you can resend higher quality photos or enter the data manually.
+5. Confirm the extracted data and agree to the price.
 4. Receive your insurance policy as a PDF directly in chat!
 5. You can also chat with AI if you have any questions directly in the chat.
 
