@@ -21,9 +21,13 @@ app = FastAPI()
 
 @app.post("/webhook")
 async def handle_webhook(request: Request):
-    update = Update.model_validate(await request.json())
-    await dp.feed_update(bot, update)
+    try:
+        update = Update.model_validate(await request.json())
+        await dp.feed_update(bot, update)
+    except Exception as e:
+        logging.exception("❌ Виняток у webhook")
     return {"ok": True}
+
 
 
 @app.on_event("startup")

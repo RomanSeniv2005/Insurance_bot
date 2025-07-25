@@ -13,6 +13,8 @@ from pdf_creation.pdf_creation import generate_insurance_pdf
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 import re
 from openai_local.openai_interaction import ask_openai
+import logging
+import traceback
 
 
 router = Router()
@@ -121,13 +123,14 @@ async def handle_car_doc_back(message: Message, state: FSMContext):
     data = await state.get_data()
     bot = message.bot
 
-    passport_path = "passport.jpg"
-    front_path = "front.jpg"
-    back_path = "back.jpg"
-    pdf_path = "car_doc_combined.pdf"
+    passport_path = "/tmp/passport.jpg"
+    front_path = "/tmp/front.jpg"
+    back_path = "/tmp/back.jpg"
+    pdf_path = "/tmp/car_doc_combined.pdf"
 
     await message.answer("Дякую за дані. Будь ласка зачекайте декілька секунд дані обробляються...")
-
+    
+    logging.info("🔽 Завантаження фото для Mindee")
     async def download(file_id, path):
         file = await bot.get_file(file_id)
         file_url = f"https://api.telegram.org/file/bot{bot.token}/{file.file_path}"
@@ -146,8 +149,9 @@ async def handle_car_doc_back(message: Message, state: FSMContext):
         front = Image.open(front_path).convert("RGB")
         back = Image.open(back_path).convert("RGB")
         front.save(pdf_path, save_all=True, append_images=[back])
-        
+
         # 🧠 Integrate mindee
+        logging.info("🧠 Обробка документів через Mindee")
         passport_result = process_passport(passport_path)
         car_doc_result = process_car_doc(pdf_path)
 
@@ -169,6 +173,8 @@ async def handle_car_doc_back(message: Message, state: FSMContext):
         await state.set_state(waiting_for_data.waiting_for_data_confirmation)
 
     except Exception as e:
+        logging.error("❌ Mindee error: %s", e)
+        logging.error(traceback.format_exc())
         print(f"Mindee error: {e}")
         traceback.print_exc()
         await message.answer("❌ Помилка під час обробки документів. Спробуй ще раз або звернись до підтримки.", reply_markup=main_menu_kb)
