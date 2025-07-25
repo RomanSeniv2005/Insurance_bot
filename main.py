@@ -5,12 +5,15 @@ import logging
 import os
 from dotenv import load_dotenv
 from hendler import router
+import asyncio
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-WEBHOOK_URL = os.getenv("WEBHOOK_URL")  # наприклад, https://yourdomain.com/webhook
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")  
+
+USE_WEBHOOK = os.getenv("USE_WEBHOOK", "True") == "True"
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
@@ -41,3 +44,26 @@ async def on_startup():
 async def on_shutdown():
     await bot.delete_webhook()
     await bot.session.close()
+
+
+async def main():
+    bot = Bot(token=os.getenv("BOT_TOKEN"))
+    dp = Dispatcher()
+    dp.include_router(router)
+    if USE_WEBHOOK:
+        # Webhook mode
+        await dp.start_webhook(
+            bot=bot,
+            webhook_path="/webhook",
+            on_startup=None,
+            on_shutdown=None,
+            skip_updates=True,
+            host="0.0.0.0",
+            port=int(os.getenv("PORT", 8080)),
+        )
+    else:
+        # Polling mode
+        await dp.start_polling(bot)
+
+if __name__ == "__main__":
+    asyncio.run(main())

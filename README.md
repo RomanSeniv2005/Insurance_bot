@@ -76,6 +76,36 @@ project_root/
 
 ---
 
+## 🌐 Running Modes: Webhook & Polling
+
+This bot supports two modes of operation:
+
+- **Webhook mode** (recommended for production/server deployment)
+- **Polling mode** (recommended for local development and testing)
+
+### **How to switch modes**
+
+- By default, the bot runs in webhook mode (`USE_WEBHOOK=True`).
+- To run locally in polling mode, set the environment variable `USE_WEBHOOK=False` in your `.env` file.
+
+### **Example .env for polling (local development):**
+```
+BOT_TOKEN=your_telegram_bot_token
+OPENAI_API_KEY=your_openai_api_key
+MINDEE_V2_API_KEY=your_mindee_api_key
+CAR_DOC_MODEL_ID=your_mindee_car_doc_model_id
+PASSPORT_MODEL_ID=your_mindee_passport_model_id
+USE_WEBHOOK=False
+```
+
+### **How to run:**
+- **Production (webhook):** Just run `python main.py` (with `USE_WEBHOOK=True` or not set)
+- **Local (polling):** Set `USE_WEBHOOK=False` and run `python main.py`
+
+> For local development, polling is easier and does not require HTTPS or a public URL.
+
+---
+
 ## ⚙️ Environment Variables
 | Variable              | Description                        |
 |---------------------- |------------------------------------|
@@ -84,6 +114,7 @@ project_root/
 | MINDEE_V2_API_KEY     | Mindee API key                      |
 | CAR_DOC_MODEL_ID      | Mindee Car Doc model ID             |
 | PASSPORT_MODEL_ID     | Mindee Passport model ID            |
+| USE_WEBHOOK           | Set to False for polling mode       |
 
 ---
 
@@ -103,18 +134,9 @@ project_root/
 2. Follow the prompts to upload your passport and car documents.
 3. Confirm the extracted data and agree to the price.
 4. Receive your insurance policy as a PDF directly in chat!
-5.You can also chat with AI if you have any questions directly in the chat.
+5. You can also chat with AI if you have any questions directly in the chat.
 
 ---
-
-## 🧑‍💻 Contributing
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
-
----
-
-## 📫 Contact
-- Author: [Your Name](mailto:your.email@example.com)
-- Telegram: [@yourusername](https://t.me/yourusername)
 
 ---
 
