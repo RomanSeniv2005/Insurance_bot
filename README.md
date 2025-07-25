@@ -11,8 +11,6 @@ A smart, user-friendly Telegram bot for fast and easy car insurance policy creat
 - 💵 Fixed price quotation and confirmation
 - 📝 Instant PDF policy generation and delivery
 - 🛡️ Error handling and user-friendly prompts
-- 🗂️ Main menu with quick actions (restart, support, FAQ, etc.)
-
 ---
 
 ## 🛠️ Technologies Used
