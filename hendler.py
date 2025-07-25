@@ -303,7 +303,7 @@ async def price_accepted(message: Message, state: FSMContext):
 
     pdf_path = generate_insurance_pdf(passport_result, car_doc_result, price=100)
     input_file = FSInputFile(path=pdf_path, filename="Поліс_страхування.pdf")
-    await message.answer_document(input_file, caption="Ось ваша страхівка 📄")
+    await message.answer_document(input_file, caption="Ось ваша страхівка 📄", reply_markup= main_menu_kb)
 
     # Delete the file after sending
     if os.path.exists(pdf_path):
