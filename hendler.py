@@ -126,6 +126,8 @@ async def handle_car_doc_back(message: Message, state: FSMContext):
     back_path = "back.jpg"
     pdf_path = "car_doc_combined.pdf"
 
+    await message.answer("Дякую за дані. Будь ласка зачекайте декілька секунд дані обробляються...")
+
     async def download(file_id, path):
         file = await bot.get_file(file_id)
         file_url = f"https://api.telegram.org/file/bot{bot.token}/{file.file_path}"
@@ -133,7 +135,7 @@ async def handle_car_doc_back(message: Message, state: FSMContext):
             async with session.get(file_url) as resp:
                 with open(path, "wb") as f:
                     f.write(await resp.read())
-
+  
     try:
         # download files
         await download(data["passport_photo_id"], passport_path)
@@ -144,12 +146,10 @@ async def handle_car_doc_back(message: Message, state: FSMContext):
         front = Image.open(front_path).convert("RGB")
         back = Image.open(back_path).convert("RGB")
         front.save(pdf_path, save_all=True, append_images=[back])
-
+        
         # 🧠 Integrate mindee
         passport_result = process_passport(passport_path)
         car_doc_result = process_car_doc(pdf_path)
-
-        await message.answer("Дякую за дані. Будь ласка зачекайте декілька секунд дані обробляються...")
 
         # save result in state 
         await state.update_data(passport_result=passport_result, car_doc_result=car_doc_result)
